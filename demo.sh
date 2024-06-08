@@ -25,4 +25,52 @@ while true; do
     sleep 5
 done
 
-printf "Hi!" 
+echo "Kibana is now online!"
+# Install sample data using curl
+echo "Installing sample data"
+echo "Install ecommerce"
+curl -u ${username}:${password} -X POST "${url}${dev_prefix}/api/sample_data/ecommerce" -s -o /dev/null -H 'kbn-xsrf: true' -H 'Content-Type: application/json' 2>&1
+echo "Install flights"
+curl -u ${username}:${password} -X POST "${url}${dev_prefix}/api/sample_data/flights" -s -o /dev/null -H 'kbn-xsrf: true' -H 'Content-Type: application/json' 2>&1
+echo "Install logs"
+curl -u ${username}:${password} -X POST "${url}${dev_prefix}/api/sample_data/logs" -s -o /dev/null -H 'kbn-xsrf: true' -H 'Content-Type: application/json' 2>&1
+echo "Sample data installed successfully!"
+
+echo "Installing o11y syntrace sample data"
+
+files=("azure_functions.ts"
+"cloud_services_icons.ts"
+"continuous_rollups.ts"
+"degraded_logs.ts"
+"distributed_trace.ts"
+"distributed_trace_long.ts"
+"high_throughput.ts"
+"infra_hosts_with_apm_hosts.ts"
+"logs_and_metrics.ts"
+"low_throughput.ts"
+"many_dependencies.ts"
+"many_errors.ts"
+"many_instances.ts"
+"many_services.ts"
+"many_transactions.ts"
+"mobile.ts"
+"other_bucket_group.ts"
+"service_map.ts"
+"service_map_oom.ts"
+"service_summary_field_version_dependent.ts"
+"services_without_transactions.ts"
+"simple_logs.ts"
+"simple_trace.ts"
+"span_links.ts"
+"spiked_latency.ts"
+"trace_with_orphan_items.ts"
+"traces_logs_assets.ts"
+"variance.ts")
+
+for file in "${files[@]}"
+do
+  node scripts/synthtrace "$file" || true
+done
+echo "Installing o11y syntrace sample data"
+
+

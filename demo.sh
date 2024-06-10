@@ -73,6 +73,16 @@ do
 done
 echo "Installing o11y synthtrace sample data finished"
 
+curl -s -u "${username}:${password}" "${kibana_url}${dev_prefix}/api/data_views/data_view" -H 'kbn-xsrf: true' -H 'elastic-api-version: 2023-10-31' -H 'Content-Type: application/json' -d '
+  {
+    "data_view": {
+       "title": "log*",
+       "name": "log*",
+       "timeFieldName": "@timestamp"
+    }
+  }'
+
+
 echo "Installing security sample data"
 cd ~/x-pack/plugins/security_solution; yarn test:generate
 echo "Installing security sample data finished"

@@ -37,6 +37,13 @@ echo "Install flights"
 curl -u ${username}:${password} -X POST "${kibana_url}${dev_prefix}/api/sample_data/flights" -s -o /dev/null -H 'kbn-xsrf: true' -H 'Content-Type: application/json' 2>&1
 echo "Sample data installed successfully!"
 
+
+echo "Installing security sample data"
+cd x-pack/plugins/security_solution; yarn test:generate --kibana http://${username}:${password}@localhost:5601
+echo "Installing security sample data finished"
+
+
+
 echo "Installing o11y synthtrace sample data"
 
 files=("azure_functions.ts"
@@ -84,9 +91,6 @@ curl -s -u "${username}:${password}" "${kibana_url}${dev_prefix}/api/data_views/
   }'
 
 
-echo "Installing security sample data"
-cd ~/x-pack/plugins/security_solution; yarn test:generate
-echo "Installing security sample data finished"
 
 
 

@@ -39,7 +39,7 @@ echo "Sample data installed successfully!"
 
 
 echo "Installing security sample data"
-cd x-pack/plugins/security_solution; yarn test:generate --kibana http://${username}:${password}@localhost:5601
+(cd x-pack/plugins/security_solution; yarn test:generate --kibana http://${username}:${password}@localhost:5601)
 echo "Installing security sample data finished"
 
 

@@ -36,7 +36,7 @@ echo "Install logs"
 curl -u ${username}:${password} -X POST "${kibana_url}${dev_prefix}/api/sample_data/logs" -s -o /dev/null -H 'kbn-xsrf: true' -H 'Content-Type: application/json' 2>&1
 echo "Sample data installed successfully!"
 
-echo "Installing o11y syntrace sample data"
+echo "Installing o11y synthtrace sample data"
 
 files=("azure_functions.ts"
 "cloud_services_icons.ts"
@@ -71,6 +71,11 @@ for file in "${files[@]}"
 do
   node scripts/synthtrace "$file" || true
 done
-echo "Installing o11y syntrace sample data"
+echo "Installing o11y synthtrace sample data finished"
+
+echo "Installing security sample data"
+cd ~/x-pack/plugins/security_solution; yarn test:generate
+echo "Installing security sample data finished"
+
 
 

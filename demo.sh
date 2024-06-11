@@ -5,6 +5,7 @@ username="elastic"
 password="changeme"
 url="http://localhost:9200"  # replace with your Elasticsearch URL if different
 kibana_url="http://localhost:5601"  # replace with your Kibana URL if different
+echo "🥣🥣🥣 Demo data ingestion script start 🥣🥣🥣"
 
 echo "Waiting for Kibana to be online..."
 while true; do
@@ -21,7 +22,6 @@ while true; do
           dev_prefix=$(echo "$response" | grep -i "location:" | cut -d':' -f2- | tr -d '[:space:]')
         fi
     fi
-
     printf "."
     sleep 5
 done
@@ -36,6 +36,47 @@ curl -u ${username}:${password} -X POST "${kibana_url}${dev_prefix}/api/sample_d
 echo "Install flights"
 curl -u ${username}:${password} -X POST "${kibana_url}${dev_prefix}/api/sample_data/flights" -s -o /dev/null -H 'kbn-xsrf: true' -H 'Content-Type: application/json' 2>&1
 echo "Sample data installed finished!"
+
+process_remote() {
+  local remote_json_url=$1
+
+  # Extract the base filename from the URL
+  local base_filename=$(basename "$remote_json_url" .json)
+
+  echo "Processing ${base_filename}"
+
+  # Fetch the JSON file and pipe it into the while loop
+  curl -s "$remote_json_url" | while IFS= read -r line; do
+    local processed_line=$(echo "$line" | sed "s/[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}T/$(date +%Y-%m-%dT)/g")
+    curl -s -u "${username}:${password}" -s -X POST "${url}/${base_filename}/_doc" -H 'Content-Type: application/json' -d"$processed_line" > /dev/null
+  done
+   echo "Processing ${base_filename} completed"
+
+  curl -s -u "${username}:${password}" "${kibana_url}${dev_prefix}/api/data_views/data_view" -H 'kbn-xsrf: true' -H 'elastic-api-version: 2023-10-31' -H 'Content-Type: application/json' -d '
+  {
+    "data_view": {
+       "title": "'"$base_filename"'",
+       "name": "'"$base_filename"'",
+       "timeFieldName": "@timestamp"
+    }
+  }' > /dev/null
+}
+
+remote_files=(
+log-apache_error.ndjson
+log-aws_s3.ndjson
+log-custom_multiplex.ndjson
+log-k8s_container.ndjson
+log-nginx_error.ndjson
+log-nqinx.ndjson
+log-system_error.ndjson
+)
+
+echo "Installing remote sample data"
+for remote_file in "${remote_files[@]}"; do
+  process_remote "https://raw.githubusercontent.com/kertal/kibana-a-la-carte-home/main/data/$remote_file"
+done
+echo "Installing remote sample data finished"
 
 echo "Installing security sample data"
 yarn --cwd x-pack/plugins/security_solution test:generate --kibana http://${username}:${password}@localhost:5601${dev_prefix}
@@ -87,7 +128,5 @@ curl -s -u "${username}:${password}" "${kibana_url}${dev_prefix}/api/data_views/
     }
   }'
 
-
-
-
-
+echo "All sample data installed successfully!"
+echo "🍜🍜🍜 Demo data ingestion script stop 🍜🍜🍜"

@@ -62,14 +62,13 @@ process_remote() {
   }' > /dev/null
 }
 
-remote_files=(
-log-apache_error.ndjson
-log-aws_s3.ndjson
-log-custom_multiplex.ndjson
-log-k8s_container.ndjson
-log-nginx_error.ndjson
-log-nqinx.ndjson
-log-system_error.ndjson
+remote_files=("log-apache_error.ndjson"
+"log-aws_s3.ndjson"
+"log-custom_multiplex.ndjson"
+"log-k8s_container.ndjson"
+"log-nginx_error.ndjson"
+"log-nqinx.ndjson"
+"log-system_error.ndjson"
 )
 
 echo "Installing remote sample data"

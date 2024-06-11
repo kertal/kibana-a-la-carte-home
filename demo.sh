@@ -71,9 +71,15 @@ remote_files=("log-apache_error.ndjson"
 "log-system_error.ndjson")
 
 echo "Installing remote sample data"
-for remote_file in "${remote_files[@]}"; do
-  process_remote "https://raw.githubusercontent.com/kertal/kibana-a-la-carte-home/main/data/$remote_file"
-done
+
+process_remote "https://raw.githubusercontent.com/kertal/kibana-a-la-carte-home/main/data/log-apache_error.ndjson"
+process_remote "https://raw.githubusercontent.com/kertal/kibana-a-la-carte-home/main/data/log-aws_s3.ndjson"
+process_remote "https://raw.githubusercontent.com/kertal/kibana-a-la-carte-home/main/data/log-custom_multiplex.ndjson"
+process_remote "https://raw.githubusercontent.com/kertal/kibana-a-la-carte-home/main/data/log-k8s_container.ndjson"
+process_remote "https://raw.githubusercontent.com/kertal/kibana-a-la-carte-home/main/data/log-nginx_error.ndjson"
+process_remote "https://raw.githubusercontent.com/kertal/kibana-a-la-carte-home/main/data/log-nqinx.ndjson"
+process_remote "https://raw.githubusercontent.com/kertal/kibana-a-la-carte-home/main/data/log-system_error.ndjson"
+
 echo "Installing remote sample data finished"
 
 echo "Installing security sample data"

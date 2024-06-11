@@ -68,8 +68,7 @@ remote_files=("log-apache_error.ndjson"
 "log-k8s_container.ndjson"
 "log-nginx_error.ndjson"
 "log-nqinx.ndjson"
-"log-system_error.ndjson"
-)
+"log-system_error.ndjson")
 
 echo "Installing remote sample data"
 for remote_file in "${remote_files[@]}"; do

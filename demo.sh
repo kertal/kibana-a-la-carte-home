@@ -41,7 +41,7 @@ process_remote() {
   remote_json_url=$1
 
   # Extract the base filename from the URL
-  base_filename=$(basename "$remote_json_url" .json)
+  base_filename=$(basename "$remote_json_url" .ndjson)
 
   echo "Processing ${base_filename}"
 

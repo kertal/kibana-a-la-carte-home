@@ -62,14 +62,6 @@ process_remote() {
   }' > /dev/null
 }
 
-remote_files=("log-apache_error.ndjson"
-"log-aws_s3.ndjson"
-"log-custom_multiplex.ndjson"
-"log-k8s_container.ndjson"
-"log-nginx_error.ndjson"
-"log-nqinx.ndjson"
-"log-system_error.ndjson")
-
 echo "Installing remote sample data"
 
 process_remote "https://raw.githubusercontent.com/kertal/kibana-a-la-carte-home/main/data/log-apache_error.ndjson"

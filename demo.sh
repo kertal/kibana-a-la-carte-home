@@ -38,16 +38,16 @@ curl -u ${username}:${password} -X POST "${kibana_url}${dev_prefix}/api/sample_d
 echo "Sample data installed finished!"
 
 process_remote() {
-  local remote_json_url=$1
+  remote_json_url=$1
 
   # Extract the base filename from the URL
-  local base_filename=$(basename "$remote_json_url" .json)
+  base_filename=$(basename "$remote_json_url" .json)
 
   echo "Processing ${base_filename}"
 
   # Fetch the JSON file and pipe it into the while loop
   curl -s "$remote_json_url" | while IFS= read -r line; do
-    local processed_line=$(echo "$line" | sed "s/[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}T/$(date +%Y-%m-%dT)/g")
+    processed_line=$(echo "$line" | sed "s/[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}T/$(date +%Y-%m-%dT)/g")
     curl -s -u "${username}:${password}" -s -X POST "${url}/${base_filename}/_doc" -H 'Content-Type: application/json' -d"$processed_line" > /dev/null
   done
    echo "Processing ${base_filename} completed"

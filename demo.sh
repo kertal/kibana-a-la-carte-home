@@ -5,7 +5,7 @@ username="elastic"
 password="changeme"
 url="http://localhost:9200"  # replace with your Elasticsearch URL if different
 kibana_url="http://localhost:5601"  # replace with your Kibana URL if different
-echo "🥣🥣🥣 Demo data ingestion script start 🥣🥣🥣"
+echo "🥣🥣🥣 Experimental demo data ingestion script start 🥣🥣🥣"
 
 echo "Waiting for Kibana to be online..."
 while true; do
@@ -64,6 +64,7 @@ process_remote() {
 
 echo "Installing remote sample data"
 
+process_remote "https://raw.githubusercontent.com/kertal/kibana-a-la-carte-home/main/data/custom-metrics-without-timestamp.ndjson"
 process_remote "https://raw.githubusercontent.com/kertal/kibana-a-la-carte-home/main/data/log-apache_error.ndjson"
 process_remote "https://raw.githubusercontent.com/kertal/kibana-a-la-carte-home/main/data/log-aws_s3.ndjson"
 process_remote "https://raw.githubusercontent.com/kertal/kibana-a-la-carte-home/main/data/log-custom_multiplex.ndjson"
@@ -99,3 +100,4 @@ curl -s -u "${username}:${password}" "${kibana_url}${dev_prefix}/api/data_views/
 
 echo "All sample data installed successfully!"
 echo "🍜🍜🍜 Demo data ingestion script stop 🍜🍜🍜"
+echo "🍜🍜🍜 May the demo gods be with you!! 🍜🍜🍜"
